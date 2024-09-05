@@ -50,9 +50,10 @@ export async function stylistic(
 
         "antfu/consistent-chaining": "error",
         "antfu/consistent-list-newline": "error",
-        "antfu/if-newline": "error",
+        "antfu/curly": "error",
         "antfu/top-level-function": "error",
-        "curly": ["error", "multi", "consistent"],
+        "style/brace-style": ["error", "1tbs"],
+
         ...overrides,
       },
     },
