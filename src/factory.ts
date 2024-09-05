@@ -100,7 +100,7 @@ export function ourongxing(
   if (isInEditor == null) {
     isInEditor = isInEditorEnv()
     if (isInEditor)
-      // eslint-disable-next-line no-console
+
       console.log("[@antfu/eslint-config] Detected running in editor, some rules are disabled.")
   }
 
