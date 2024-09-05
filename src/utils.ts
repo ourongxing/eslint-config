@@ -1,14 +1,14 @@
-import process from 'node:process'
-import { fileURLToPath } from 'node:url'
-import { isPackageExists } from 'local-pkg'
-import type { Awaitable, TypedFlatConfigItem } from './types'
+import process from "node:process"
+import { fileURLToPath } from "node:url"
+import { isPackageExists } from "local-pkg"
+import type { Awaitable, TypedFlatConfigItem } from "./types"
 
-const scopeUrl = fileURLToPath(new URL('.', import.meta.url))
-const isCwdInScope = isPackageExists('@antfu/eslint-config')
+const scopeUrl = fileURLToPath(new URL(".", import.meta.url))
+const isCwdInScope = isPackageExists("@antfu/eslint-config")
 
 export const parserPlain = {
   meta: {
-    name: 'parser-plain',
+    name: "parser-plain",
   },
   parseForESLint: (code: string) => ({
     ast: {
@@ -17,7 +17,7 @@ export const parserPlain = {
       loc: { end: code.length, start: 0 },
       range: [0, code.length],
       tokens: [],
-      type: 'Program',
+      type: "Program",
     },
     scopeManager: null,
     services: { isPlain: true },
@@ -60,10 +60,10 @@ export function renameRules(
   return Object.fromEntries(
     Object.entries(rules)
       .map(([key, value]) => {
-        for (const [from, to] of Object.entries(map)) {
+        for (const [from, to] of Object.entries(map))
           if (key.startsWith(`${from}/`))
             return [to + key.slice(from.length), value]
-        }
+
         return [key, value]
       }),
   )
@@ -88,7 +88,7 @@ export function renamePluginInConfigs(configs: TypedFlatConfigItem[], map: Recor
     const clone = { ...i }
     if (clone.rules)
       clone.rules = renameRules(clone.rules, map)
-    if (clone.plugins) {
+    if (clone.plugins)
       clone.plugins = Object.fromEntries(
         Object.entries(clone.plugins)
           .map(([key, value]) => {
@@ -97,7 +97,7 @@ export function renamePluginInConfigs(configs: TypedFlatConfigItem[], map: Recor
             return [key, value]
           }),
       )
-    }
+
     return clone
   })
 }
@@ -123,12 +123,12 @@ export async function ensurePackages(packages: (string | undefined)[]): Promise<
   if (nonExistingPackages.length === 0)
     return
 
-  const p = await import('@clack/prompts')
+  const p = await import("@clack/prompts")
   const result = await p.confirm({
-    message: `${nonExistingPackages.length === 1 ? 'Package is' : 'Packages are'} required for this config: ${nonExistingPackages.join(', ')}. Do you want to install them?`,
+    message: `${nonExistingPackages.length === 1 ? "Package is" : "Packages are"} required for this config: ${nonExistingPackages.join(", ")}. Do you want to install them?`,
   })
   if (result)
-    await import('@antfu/install-pkg').then(i => i.installPackage(nonExistingPackages, { dev: true }))
+    await import("@antfu/install-pkg").then(i => i.installPackage(nonExistingPackages, { dev: true }))
 }
 
 export function isInEditorEnv(): boolean {
@@ -149,6 +149,6 @@ export function isInGitHooksOrLintStaged(): boolean {
   return !!(false
     || process.env.GIT_PARAMS
     || process.env.VSCODE_GIT_COMMAND
-    || process.env.npm_lifecycle_script?.startsWith('lint-staged')
+    || process.env.npm_lifecycle_script?.startsWith("lint-staged")
   )
 }

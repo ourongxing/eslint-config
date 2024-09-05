@@ -1,79 +1,79 @@
-import { join, resolve } from 'node:path'
-import { afterAll, beforeAll, it } from 'vitest'
-import fs from 'fs-extra'
-import { execa } from 'execa'
-import fg from 'fast-glob'
-import type { OptionsConfig, TypedFlatConfigItem } from '../src/types'
+import { join, resolve } from "node:path"
+import { afterAll, beforeAll, it } from "vitest"
+import fs from "fs-extra"
+import { execa } from "execa"
+import fg from "fast-glob"
+import type { OptionsConfig, TypedFlatConfigItem } from "../src/types"
 
 beforeAll(async () => {
-  await fs.rm('_fixtures', { recursive: true, force: true })
+  await fs.rm("_fixtures", { recursive: true, force: true })
 })
 afterAll(async () => {
-  await fs.rm('_fixtures', { recursive: true, force: true })
+  await fs.rm("_fixtures", { recursive: true, force: true })
 })
 
-runWithConfig('js', {
+runWithConfig("js", {
   typescript: false,
   vue: false,
 })
-runWithConfig('all', {
+runWithConfig("all", {
   typescript: true,
   vue: true,
   svelte: true,
   astro: true,
 })
-runWithConfig('no-style', {
+runWithConfig("no-style", {
   typescript: true,
   vue: true,
   stylistic: false,
 })
 runWithConfig(
-  'tab-double-quotes',
+  "tab-double-quotes",
   {
     typescript: true,
     vue: true,
     stylistic: {
-      indent: 'tab',
-      quotes: 'double',
+      indent: "tab",
+      quotes: "double",
     },
   },
   {
     rules: {
-      'style/no-mixed-spaces-and-tabs': 'off',
+      "style/no-mixed-spaces-and-tabs": "off",
     },
   },
 )
 
 // https://github.com/antfu/eslint-config/issues/255
 runWithConfig(
-  'ts-override',
+  "ts-override",
   {
     typescript: true,
   },
   {
     rules: {
-      'ts/consistent-type-definitions': ['error', 'type'],
+      "ts/consistent-type-definitions": ["error", "type"],
     },
   },
 )
 
 // https://github.com/antfu/eslint-config/issues/255
 runWithConfig(
-  'ts-strict',
+  "ts-strict",
   {
     typescript: {
-      tsconfigPath: './tsconfig.json',
+      tsconfigPath: "./tsconfig.json",
     },
   },
   {
     rules: {
-      'ts/no-unsafe-return': ['off'],
+      "ts/no-unsafe-return": ["off"],
     },
   },
 )
 
 runWithConfig(
-  'with-formatters',
+  "with-formatters",
   {
     typescript: true,
     vue: true,
@@ -83,7 +83,7 @@ runWithConfig(
 )
 
 runWithConfig(
-  'no-markdown-with-formatters',
+  "no-markdown-with-formatters",
   {
     jsx: false,
     vue: false,
@@ -96,16 +96,16 @@ runWithConfig(
 
 function runWithConfig(name: string, configs: OptionsConfig, ...items: TypedFlatConfigItem[]) {
   it.concurrent(name, async ({ expect }) => {
-    const from = resolve('fixtures/input')
-    const output = resolve('fixtures/output', name)
-    const target = resolve('_fixtures', name)
+    const from = resolve("fixtures/input")
+    const output = resolve("fixtures/output", name)
+    const target = resolve("_fixtures", name)
 
     await fs.copy(from, target, {
       filter: (src) => {
-        return !src.includes('node_modules')
+        return !src.includes("node_modules")
       },
     })
-    await fs.writeFile(join(target, 'eslint.config.js'), `
+    await fs.writeFile(join(target, "eslint.config.js"), `
 // @eslint-disable
 import antfu from '@antfu/eslint-config'
 
@@ -115,22 +115,22 @@ export default antfu(
 )
   `)
 
-    await execa('npx', ['eslint', '.', '--fix'], {
+    await execa("npx", ["eslint", ".", "--fix"], {
       cwd: target,
-      stdio: 'pipe',
+      stdio: "pipe",
     })
 
-    const files = await fg('**/*', {
+    const files = await fg("**/*", {
       ignore: [
-        'node_modules',
-        'eslint.config.js',
+        "node_modules",
+        "eslint.config.js",
       ],
       cwd: target,
     })
 
     await Promise.all(files.map(async (file) => {
-      const content = await fs.readFile(join(target, file), 'utf-8')
-      const source = await fs.readFile(join(from, file), 'utf-8')
+      const content = await fs.readFile(join(target, file), "utf-8")
+      const source = await fs.readFile(join(from, file), "utf-8")
       const outputPath = join(output, file)
       if (content === source) {
         if (fs.existsSync(outputPath))

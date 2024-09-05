@@ -1,5 +1,5 @@
-import { ensurePackages, interopDefault } from '../utils'
-import type { OptionsUnoCSS, TypedFlatConfigItem } from '../types'
+import { ensurePackages, interopDefault } from "../utils"
+import type { OptionsUnoCSS, TypedFlatConfigItem } from "../types"
 
 export async function unocss(
   options: OptionsUnoCSS = {},
@@ -10,31 +10,31 @@ export async function unocss(
   } = options
 
   await ensurePackages([
-    '@unocss/eslint-plugin',
+    "@unocss/eslint-plugin",
   ])
 
   const [
     pluginUnoCSS,
   ] = await Promise.all([
-    interopDefault(import('@unocss/eslint-plugin')),
+    interopDefault(import("@unocss/eslint-plugin")),
   ] as const)
 
   return [
     {
-      name: 'antfu/unocss',
+      name: "antfu/unocss",
       plugins: {
         unocss: pluginUnoCSS,
       },
       rules: {
-        'unocss/order': 'warn',
+        "unocss/order": "warn",
         ...attributify
           ? {
-              'unocss/order-attributify': 'warn',
+              "unocss/order-attributify": "warn",
             }
           : {},
         ...strict
           ? {
-              'unocss/blocklist': 'error',
+              "unocss/blocklist": "error",
             }
           : {},
       },
