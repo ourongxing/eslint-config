@@ -1,11 +1,11 @@
-import { interopDefault } from '../utils'
-import type { OptionsOverrides, StylisticConfig, TypedFlatConfigItem } from '../types'
-import { pluginAntfu } from '../plugins'
+import { interopDefault } from "../utils"
+import type { OptionsOverrides, StylisticConfig, TypedFlatConfigItem } from "../types"
+import { pluginAntfu } from "../plugins"
 
 export const StylisticConfigDefaults: StylisticConfig = {
   indent: 2,
   jsx: true,
-  quotes: 'single',
+  quotes: "double",
   semi: false,
 }
 
@@ -19,7 +19,6 @@ export async function stylistic(
   const {
     indent,
     jsx,
-    lessOpinionated = false,
     overrides = {},
     quotes,
     semi,
@@ -28,20 +27,20 @@ export async function stylistic(
     ...options,
   }
 
-  const pluginStylistic = await interopDefault(import('@stylistic/eslint-plugin'))
+  const pluginStylistic = await interopDefault(import("@stylistic/eslint-plugin"))
 
   const config = pluginStylistic.configs.customize({
     flat: true,
     indent,
     jsx,
-    pluginName: 'style',
+    pluginName: "style",
     quotes,
     semi,
   })
 
   return [
     {
-      name: 'antfu/stylistic/rules',
+      name: "antfu/stylistic/rules",
       plugins: {
         antfu: pluginAntfu,
         style: pluginStylistic,
@@ -49,20 +48,11 @@ export async function stylistic(
       rules: {
         ...config.rules,
 
-        'antfu/consistent-chaining': 'error',
-        'antfu/consistent-list-newline': 'error',
-
-        ...(lessOpinionated
-          ? {
-              curly: ['error', 'all'],
-            }
-          : {
-              'antfu/curly': 'error',
-              'antfu/if-newline': 'error',
-              'antfu/top-level-function': 'error',
-            }
-        ),
-
+        "antfu/consistent-chaining": "error",
+        "antfu/consistent-list-newline": "error",
+        "antfu/if-newline": "error",
+        "antfu/top-level-function": "error",
+        "curly": ["error", "multi", "consistent"],
         ...overrides,
       },
     },
