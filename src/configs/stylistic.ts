@@ -52,6 +52,7 @@ export async function stylistic(
         "antfu/consistent-list-newline": "error",
         "antfu/curly": "error",
         "antfu/top-level-function": "error",
+        "curly": "off",
         "style/brace-style": ["error", "1tbs"],
 
         ...overrides,
