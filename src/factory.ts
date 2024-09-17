@@ -115,18 +115,19 @@ export function ourongxing(
 
   const configs: Awaitable<TypedFlatConfigItem[]>[] = []
 
-  if (enableGitignore)
-    if (typeof enableGitignore !== "boolean")
+  if (enableGitignore) {
+    if (typeof enableGitignore !== "boolean") {
       configs.push(interopDefault(import("eslint-config-flat-gitignore")).then(r => [r({
         name: "antfu/gitignore",
         ...enableGitignore,
       })]))
-
-    else
+    } else {
       configs.push(interopDefault(import("eslint-config-flat-gitignore")).then(r => [r({
         name: "antfu/gitignore",
         strict: false,
       })]))
+    }
+  }
 
   const typescriptOptions = resolveSubOptions(options, "typescript")
   const tsconfigPath = "tsconfigPath" in typescriptOptions ? typescriptOptions.tsconfigPath : undefined
@@ -161,71 +162,80 @@ export function ourongxing(
   if (enableJsx)
     configs.push(jsx())
 
-  if (enableTypeScript)
+  if (enableTypeScript) {
     configs.push(typescript({
       ...typescriptOptions,
       componentExts,
       overrides: getOverrides(options, "typescript"),
       type: options.type,
     }))
+  }
 
-  if (stylisticOptions)
+  if (stylisticOptions) {
     configs.push(stylistic({
       ...stylisticOptions,
       lessOpinionated: options.lessOpinionated,
       overrides: getOverrides(options, "stylistic"),
     }))
+  }
 
   if (enableRegexp)
     configs.push(regexp(typeof enableRegexp === "boolean" ? {} : enableRegexp))
 
-  if (options.test ?? true)
+  if (options.test ?? true) {
     configs.push(test({
       isInEditor,
       overrides: getOverrides(options, "test"),
     }))
+  }
 
-  if (enableVue)
+  if (enableVue) {
     configs.push(vue({
       ...resolveSubOptions(options, "vue"),
       overrides: getOverrides(options, "vue"),
       stylistic: stylisticOptions,
       typescript: !!enableTypeScript,
     }))
+  }
 
-  if (enableReact)
+  if (enableReact) {
     configs.push(react({
       overrides: getOverrides(options, "react"),
       tsconfigPath,
     }))
+  }
 
-  if (enableSolid)
+  if (enableSolid) {
     configs.push(solid({
       overrides: getOverrides(options, "solid"),
       tsconfigPath,
       typescript: !!enableTypeScript,
     }))
+  }
 
-  if (enableSvelte)
+  if (enableSvelte) {
     configs.push(svelte({
       overrides: getOverrides(options, "svelte"),
       stylistic: stylisticOptions,
       typescript: !!enableTypeScript,
     }))
+  }
 
-  if (enableUnoCSS)
+  if (enableUnoCSS) {
     configs.push(unocss({
       ...resolveSubOptions(options, "unocss"),
       overrides: getOverrides(options, "unocss"),
     }))
+  }
 
-  if (enableAstro)
+  if (enableAstro) {
     configs.push(astro({
       overrides: getOverrides(options, "astro"),
       stylistic: stylisticOptions,
     }))
+  }
 
-  if (options.jsonc ?? true)
+  if (options.jsonc ?? true) {
     configs.push(
       jsonc({
         overrides: getOverrides(options, "jsonc"),
@@ -234,20 +244,23 @@ export function ourongxing(
       sortPackageJson(),
       sortTsconfig(),
     )
+  }
 
-  if (options.yaml ?? true)
+  if (options.yaml ?? true) {
     configs.push(yaml({
       overrides: getOverrides(options, "yaml"),
       stylistic: stylisticOptions,
     }))
+  }
 
-  if (options.toml ?? true)
+  if (options.toml ?? true) {
     configs.push(toml({
       overrides: getOverrides(options, "toml"),
       stylistic: stylisticOptions,
     }))
+  }
 
-  if (options.markdown ?? true)
+  if (options.markdown ?? true) {
     configs.push(
       markdown(
         {
@@ -256,12 +269,14 @@ export function ourongxing(
         },
       ),
     )
+  }
 
-  if (options.formatters)
+  if (options.formatters) {
     configs.push(formatters(
       options.formatters,
       typeof stylisticOptions === "boolean" ? {} : stylisticOptions,
     ))
+  }
 
   configs.push(
     disables(),
@@ -288,9 +303,10 @@ export function ourongxing(
       ...userConfigs as any,
     )
 
-  if (autoRenamePlugins)
+  if (autoRenamePlugins) {
     composer = composer
       .renamePlugins(defaultPluginRenaming)
+  }
 
   return composer
 }

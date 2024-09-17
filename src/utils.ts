@@ -60,9 +60,10 @@ export function renameRules(
   return Object.fromEntries(
     Object.entries(rules)
       .map(([key, value]) => {
-        for (const [from, to] of Object.entries(map))
+        for (const [from, to] of Object.entries(map)) {
           if (key.startsWith(`${from}/`))
             return [to + key.slice(from.length), value]
+        }
 
         return [key, value]
       }),
@@ -88,7 +89,7 @@ export function renamePluginInConfigs(configs: TypedFlatConfigItem[], map: Recor
     const clone = { ...i }
     if (clone.rules)
       clone.rules = renameRules(clone.rules, map)
-    if (clone.plugins)
+    if (clone.plugins) {
       clone.plugins = Object.fromEntries(
         Object.entries(clone.plugins)
           .map(([key, value]) => {
@@ -97,6 +98,7 @@ export function renamePluginInConfigs(configs: TypedFlatConfigItem[], map: Recor
             return [key, value]
           }),
       )
+    }
 
     return clone
   })

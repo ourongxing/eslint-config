@@ -82,7 +82,7 @@ export async function formatters(
     },
   ]
 
-  if (options.css)
+  if (options.css) {
     configs.push(
       {
         files: [GLOB_CSS, GLOB_POSTCSS],
@@ -133,8 +133,9 @@ export async function formatters(
         },
       },
     )
+  }
 
-  if (options.html)
+  if (options.html) {
     configs.push({
       files: [GLOB_HTML],
       languageOptions: {
@@ -151,8 +152,9 @@ export async function formatters(
         ],
       },
     })
+  }
 
-  if (options.xml)
+  if (options.xml) {
     configs.push({
       files: [GLOB_XML],
       languageOptions: {
@@ -173,8 +175,9 @@ export async function formatters(
         ],
       },
     })
+  }
 
-  if (options.svg)
+  if (options.svg) {
     configs.push({
       files: [GLOB_SVG],
       languageOptions: {
@@ -195,6 +198,7 @@ export async function formatters(
         ],
       },
     })
+  }
 
   if (options.markdown) {
     const formater = options.markdown === true
@@ -231,7 +235,7 @@ export async function formatters(
       },
     })
 
-    if (options.slidev)
+    if (options.slidev) {
       configs.push({
         files: GLOB_SLIDEV,
         languageOptions: {
@@ -252,6 +256,7 @@ export async function formatters(
           ],
         },
       })
+    }
   }
 
   if (options.astro) {
@@ -290,7 +295,7 @@ export async function formatters(
     })
   }
 
-  if (options.graphql)
+  if (options.graphql) {
     configs.push({
       files: [GLOB_GRAPHQL],
       languageOptions: {
@@ -307,6 +312,7 @@ export async function formatters(
         ],
       },
     })
+  }
 
   return configs
 }

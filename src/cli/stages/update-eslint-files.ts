@@ -28,11 +28,12 @@ export async function updateEslintFiles(result: PromptResult): Promise<void> {
     const parsed = parse(content)
     const globs = parsed.globs()
 
-    for (const glob of globs)
+    for (const glob of globs) {
       if (glob.type === "ignore")
         eslintIgnores.push(...glob.patterns)
       else if (glob.type === "unignore")
         eslintIgnores.push(...glob.patterns.map((pattern: string) => `!${pattern}`))
+    }
   }
 
   const configLines: string[] = []

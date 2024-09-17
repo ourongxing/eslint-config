@@ -23,8 +23,7 @@ export async function updateVscodeSettings(result: PromptResult): Promise<void> 
   if (!fs.existsSync(settingsPath)) {
     await fsp.writeFile(settingsPath, `{${vscodeSettingsString}}\n`, "utf-8")
     p.log.success(c.green(`Created .vscode/settings.json`))
-  }
-  else {
+  } else {
     let settingsContent = await fsp.readFile(settingsPath, "utf8")
 
     settingsContent = settingsContent.trim().replace(/\s*\}$/, "")

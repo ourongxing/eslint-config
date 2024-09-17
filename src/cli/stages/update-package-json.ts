@@ -27,7 +27,7 @@ export async function updatePackageJson(result: PromptResult): Promise<void> {
 
   const addedPackages: string[] = []
 
-  if (result.extra.length)
+  if (result.extra.length) {
     result.extra.forEach((item: ExtraLibrariesOption) => {
       switch (item) {
         case "formatter":
@@ -51,14 +51,16 @@ export async function updatePackageJson(result: PromptResult): Promise<void> {
           break
       }
     })
+  }
 
   for (const framework of result.frameworks) {
     const deps = dependenciesMap[framework]
-    if (deps)
+    if (deps) {
       deps.forEach((f) => {
         pkg.devDependencies[f] = pkgJson.devDependencies[f]
         addedPackages.push(f)
       })
+    }
   }
 
   if (addedPackages.length)

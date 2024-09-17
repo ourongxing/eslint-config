@@ -10,10 +10,12 @@ export async function regexp(
     ...config.rules,
   }
 
-  if (options.level === "warn")
-    for (const key in rules)
+  if (options.level === "warn") {
+    for (const key in rules) {
       if (rules[key] === "error")
         rules[key] = "warn"
+    }
+  }
 
   return [
     {
