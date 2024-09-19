@@ -109,7 +109,7 @@ function runWithConfig(name: string, configs: OptionsConfig, ...items: TypedFlat
 // @eslint-disable
 import {ourongxing} from '@ourongxing/eslint-config'
 
-export default antfu(
+export default ourongxing(
   ${JSON.stringify(configs)},
   ...${JSON.stringify(items) ?? []},
 )
